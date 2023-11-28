@@ -1,22 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query, Headers, HttpCode  } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query, Headers, HttpCode, Req , Res  } from '@nestjs/common';
 import { WangxinService } from './wangxin.service';
 import { CreateWangxinDto } from './dto/create-wangxin.dto';
 import { UpdateWangxinDto } from './dto/update-wangxin.dto';
-
+import * as svgCaptcha from 'svg-captcha';
+import { log } from 'console';
 @Controller('wangxin')
 export class WangxinController {
   constructor(private readonly wangxinService: WangxinService) {}
 
-  @Post()
-  create(@Body() body) {
-    console.log(body);
+  @Post('checkCode')
+  checkCode(@Req() req, @Res() res, @Body() body) {
     // return this.wangxinService.create(createWangxinDto);
-    return 'This action adds a new wangxin';
+    return this.wangxinService.checkCode(req, res, body);
   }
 
-  @Get()
-  getCode() {
-    return this.wangxinService.getCode();
+  @Get('getCode')
+  getCode(@Req() req, @Res() res) {
+    return this.wangxinService.getCode(req, res);
   }
 
   @Get(':id')
