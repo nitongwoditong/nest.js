@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWangxinDto } from './dto/create-wangxin.dto';
 import { UpdateWangxinDto } from './dto/update-wangxin.dto';
+import * as svgCaptcha from 'svg-captcha';
 
 @Injectable()
 export class WangxinService {
@@ -8,7 +9,8 @@ export class WangxinService {
     return 'This action adds a new wangxin';
   }
 
-  findAll() {
+  getCode() {
+    
     return `This action returns all wangxin`;
   }
 

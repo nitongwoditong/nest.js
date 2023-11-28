@@ -15,8 +15,8 @@ export class WangxinController {
   }
 
   @Get()
-  findAll() {
-    return this.wangxinService.findAll();
+  getCode() {
+    return this.wangxinService.getCode();
   }
 
   @Get(':id')
