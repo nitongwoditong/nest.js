@@ -6,9 +6,7 @@ import * as svgCaptcha from 'svg-captcha';
 @Injectable()
 export class WangxinService {
   checkCode(req, res, body) {
-    if (
-      req.session.code.toLocaleLowerCase() === body.code.toLocaleLowerCase()
-    ) {
+    if (req.session.code === body.code) {
       res.send({
         code: 200,
         msg: '验证码正确',

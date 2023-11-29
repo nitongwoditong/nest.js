@@ -2,14 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Request, Query, Head
 import { WangxinService } from './wangxin.service';
 import { CreateWangxinDto } from './dto/create-wangxin.dto';
 import { UpdateWangxinDto } from './dto/update-wangxin.dto';
-import * as svgCaptcha from 'svg-captcha';
-import { log } from 'console';
 @Controller('wangxin')
 export class WangxinController {
   constructor(private readonly wangxinService: WangxinService) {}
 
   @Post('checkCode')
-  checkCode(@Req() req, @Res() res, @Body() body) {
+  checkCode(@Req() req, @Res() res, @Body() body: CreateWangxinDto) {
     // return this.wangxinService.create(createWangxinDto);
     return this.wangxinService.checkCode(req, res, body);
   }
