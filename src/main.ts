@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import { ValidationPipe } from '@nestjs/common';
+import * as cors from 'cors';
 
 const whiteList = ['/list'];
 function middleWareAll(req, res, next) {
@@ -23,6 +24,7 @@ async function bootstrap() {
   );
   app.useGlobalPipes(new ValidationPipe());
   app.use(middleWareAll);
+  app.use(cors());
   await app.listen(3000);
 }
 bootstrap();
