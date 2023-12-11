@@ -1,10 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WangxinModule } from './wangxin/wangxin.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { LogMiddleware } from './middleware/global';
+import { LoginGuard } from './login.guard';
+import { APP_GUARD } from '@nestjs/core';
 
+// Nest 在启动的时候，会递归解析 Module 依赖，扫描其中的 provider、controller，注入它的依赖。
 @Module({
   imports: [
     WangxinModule,
@@ -24,6 +28,42 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  // providers: [AppService],
+  providers: [
+    // {
+    //   provide: 'app_service',
+    //   useClass: AppService,
+    // },
+    AppService,
+    {
+      provide: 'person',
+      useValue: {
+        name: 'aaa',
+        age: 20,
+      },
+    },
+    {
+      provide: 'person5',
+      async useFactory() {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 3000);
+        });
+        return {
+          name: 'bbb',
+          desc: 'cccc',
+        };
+      },
+    },
+    // guard使用这种方式 因为guard文件里面还可以注入其他的模块
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: LoginGuard,
+    // },
+  ],
 })
-export class AppModule {}
+// 全局路由中间件
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogMiddleware).forRoutes('aaa*');
+  }
+}
